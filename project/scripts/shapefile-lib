@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ "$#" -lt "1" ]; then
+	echo "usage: shapefile-lib <class name>"
+	exit 1
+fi
+
+# find java claspath
+DIR=`dirname $0`
+#echo "we are operating from: $DIR"
+CLASSPATH=.
+CLASSPATH+=:$DIR/../lib/*
+CLASSPATH+=:$DIR/../bin/
+#echo "CLASSPATH=$CLASSPATH"
+
+CMD="java -cp $CLASSPATH"
+exec $CMD "$@"
