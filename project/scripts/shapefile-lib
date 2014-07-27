@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$#" -lt "1" ]; then
-	echo "usage: shapefile-lib <class name>"
+	echo "usage: $0 <class name>"
 	exit 1
 fi
 
