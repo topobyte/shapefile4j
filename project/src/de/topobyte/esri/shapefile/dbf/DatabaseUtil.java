@@ -34,14 +34,14 @@ public class DatabaseUtil
 	public static void printRows(Database database)
 	{
 		for (int k = 0; k < database.getNumberOfRows(); k++) {
-			System.out.println("Record " + k);
+			System.out.println("*** Record " + k);
 			Row row = database.getRow(k);
 			for (int i = 0; i < database.getNumberOfColumns(); i++) {
 				Field field = database.getField(i);
 				String content = row.getValue(i);
-				System.out.println(field.getName() + " = " + content.trim());
+				System.out.println((i + 1) + ": " + field.getName() + " = "
+						+ content.trim());
 			}
 		}
 	}
-
 }
