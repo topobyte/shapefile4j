@@ -1,0 +1,62 @@
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
+allprojects {
+    group = pGroup
+    version = pVersion
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'eclipse'
+
+    repositories {
+        maven {
+            url maven_path_topobyte
+        }
+        mavenCentral()
+    }
+}
+
+project(':shapefile-lib') {
+    dependencies {
+        compile "org.slf4j:slf4j-api:1.6.1"
+        runtime "org.slf4j:slf4j-log4j12:1.6.1"
+        runtime "log4j:log4j:1.2.16"
+        compile "net.sf.trove4j:trove4j:3.0.3"
+        compile "com.vividsolutions:jts:1.13"
+        compile "commons-cli:commons-cli:1.2"
+        compile "commons-codec:commons-codec:1.10"
+        compile "topobyte:cli-helper:0.0.1"
+        compile "topobyte:xBaseJ-topobyte:0.0.2"
+    }
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                repository(url: maven_url_topobyte)
+            }
+        }
+    }
+}
+
+project(':shapefile-lib-util') {
+    dependencies {
+        compile project(':shapefile-lib')
+        compile "topobyte:selenium-core:0.0.1"
+    }
+    task copyJars(type: Copy) {
+        into "$buildDir/lib-run"
+        from jar
+    }
+
+    task copyDeps(type: Copy) {
+        into "$buildDir/lib-run"
+        from configurations.runtime
+    }
+
+    task createRuntime(dependsOn: [copyJars, copyDeps]) {
+        description 'Setup the execution environment for the main scripts'
+    }
+}

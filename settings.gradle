@@ -1,0 +1,3 @@
+include 'core', 'util'
+project(':core').name = 'shapefile-lib'
+project(':util').name = 'shapefile-lib-util'

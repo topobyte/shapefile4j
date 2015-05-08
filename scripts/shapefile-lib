@@ -8,9 +8,9 @@ fi
 # find java claspath
 DIR=`dirname $0`
 #echo "we are operating from: $DIR"
-CLASSPATH=.
-CLASSPATH+=:$DIR/../lib/*
+CLASSPATH=:$DIR/../util/build/lib-run/*
 CLASSPATH+=:$DIR/../bin/
+CLASSPATH+=.
 #echo "CLASSPATH=$CLASSPATH"
 
 CMD="java -cp $CLASSPATH"
