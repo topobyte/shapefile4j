@@ -16,6 +16,9 @@ subprojects {
         maven {
             url maven_path_topobyte
         }
+        maven {
+            url 'http://mvn.topobyte.de'
+        }
         mavenCentral()
     }
 }
@@ -27,9 +30,7 @@ project(':shapefile-lib') {
         runtime "log4j:log4j:1.2.16"
         compile "net.sf.trove4j:trove4j:3.0.3"
         compile "com.vividsolutions:jts:1.13"
-        compile "commons-cli:commons-cli:1.2"
         compile "commons-codec:commons-codec:1.10"
-        compile "topobyte:cli-helper:0.0.1"
         compile "topobyte:xBaseJ-topobyte:0.0.2"
     }
     uploadArchives {
@@ -45,6 +46,7 @@ project(':shapefile-lib-util') {
     dependencies {
         compile project(':shapefile-lib')
         compile "topobyte:selenium-core:0.0.1"
+        compile "de.topobyte:commons-cli-helper:0.0.5"
     }
     task copyJars(type: Copy) {
         into "$buildDir/lib-run"
