@@ -2,3 +2,6 @@ bin
 dist
 .gradle
 build
+.project
+.classpath
+.settings
