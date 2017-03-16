@@ -31,7 +31,7 @@ project(':shapefile-lib') {
         compile "net.sf.trove4j:trove4j:3.0.3"
         compile "com.vividsolutions:jts:1.13"
         compile "commons-codec:commons-codec:1.10"
-        compile "topobyte:xBaseJ-topobyte:0.0.2"
+        compile 'topobyte:xBaseJ-topobyte:0.0.3'
     }
     uploadArchives {
         repositories {
@@ -45,7 +45,7 @@ project(':shapefile-lib') {
 project(':shapefile-lib-util') {
     dependencies {
         compile project(':shapefile-lib')
-        compile "topobyte:selenium-core:0.0.1"
+        compile 'topobyte:selenium-core:0.0.4'
         compile "de.topobyte:commons-cli-helper:0.0.5"
     }
     task copyJars(type: Copy) {
