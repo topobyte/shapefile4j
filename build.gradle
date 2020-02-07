@@ -32,6 +32,10 @@ project(':shapefile-lib') {
         compile "commons-codec:commons-codec:1.10"
         compile 'topobyte:xBaseJ-topobyte:0.0.3'
     }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
     uploadArchives {
         repositories {
             mavenDeployer {
@@ -39,6 +43,7 @@ project(':shapefile-lib') {
             }
         }
     }
+
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
