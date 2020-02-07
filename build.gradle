@@ -25,11 +25,11 @@ subprojects {
 
 project(':shapefile-lib') {
     dependencies {
-        compile "org.slf4j:slf4j-api:1.6.1"
-        runtime "org.slf4j:slf4j-log4j12:1.6.1"
-        runtime "log4j:log4j:1.2.16"
-        compile "com.vividsolutions:jts:1.13"
-        compile "commons-codec:commons-codec:1.10"
+        compile 'org.slf4j:slf4j-api:1.6.1'
+        runtime 'org.slf4j:slf4j-log4j12:1.6.1'
+        runtime 'log4j:log4j:1.2.16'
+        compile 'org.locationtech.jts:jts-core:1.16.1'
+        compile 'commons-codec:commons-codec:1.10'
         compile 'topobyte:xBaseJ-topobyte:0.0.3'
     }
 
@@ -57,8 +57,8 @@ project(':shapefile-lib') {
 project(':shapefile-lib-util') {
     dependencies {
         compile project(':shapefile-lib')
-        compile 'topobyte:selenium-core:0.0.4'
-        compile "de.topobyte:commons-cli-helper:0.0.5"
+        compile 'de.topobyte:simple-mapfile-xml:0.1.0'
+        compile 'de.topobyte:commons-cli-helper:0.1.0'
     }
     task copyJars(type: Copy) {
         into "$buildDir/lib-run"

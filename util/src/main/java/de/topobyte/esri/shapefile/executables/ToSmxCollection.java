@@ -19,24 +19,22 @@ package de.topobyte.esri.shapefile.executables;
 import java.io.File;
 import java.util.List;
 
+import org.locationtech.jts.geom.Geometry;
 import org.xBaseJ.fields.Field;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 import de.topobyte.esri.shapefile.Shapefile;
 import de.topobyte.esri.shapefile.ShapefileAccess;
 import de.topobyte.esri.shapefile.dbf.Database;
 import de.topobyte.esri.shapefile.dbf.Row;
-import de.topobyte.selenium.fileformat.EntityFile;
-import de.topobyte.selenium.fileformat.FileWriter;
+import de.topobyte.simplemapfile.core.EntityFile;
+import de.topobyte.simplemapfile.xml.SmxFileWriter;
 
 public class ToSmxCollection
 {
 	public static void main(String[] args)
 	{
 		if (args.length != 2) {
-			System.out.println("usage: "
-					+ ToSmxCollection.class.getSimpleName()
+			System.out.println("usage: " + ToSmxCollection.class.getSimpleName()
 					+ " <shapefile> <output directory>");
 			System.exit(1);
 		}
@@ -90,13 +88,12 @@ public class ToSmxCollection
 			}
 			File file = new File(dir, String.format(pattern, i));
 			try {
-				FileWriter.write(entityFile, file);
+				SmxFileWriter.write(entityFile, file);
 			} catch (Exception e) {
-				System.out
-						.println("Error while reading writing output file '"
-								+ file.getAbsolutePath() + "' ("
-								+ e.getClass().getSimpleName() + "): "
-								+ e.getMessage());
+				System.out.println("Error while reading writing output file '"
+						+ file.getAbsolutePath() + "' ("
+						+ e.getClass().getSimpleName() + "): "
+						+ e.getMessage());
 			}
 		}
 	}
