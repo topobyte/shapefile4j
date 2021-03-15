@@ -24,8 +24,8 @@ import org.xBaseJ.fields.Field;
 
 public class Database
 {
-	private List<Field> fields = new ArrayList<Field>();
-	private List<Row> rows = new ArrayList<Row>();
+	private List<Field> fields = new ArrayList<>();
+	private List<Row> rows = new ArrayList<>();
 
 	public Database(String filename)
 	{
@@ -39,7 +39,7 @@ public class Database
 
 			for (int i = 1; i <= dbf.getRecordCount(); i++) {
 				dbf.read();
-				List<String> values = new ArrayList<String>();
+				List<String> values = new ArrayList<>();
 				for (int f = 1; f <= dbf.getFieldCount(); ++f) {
 					Field field = dbf.getField(f);
 					values.add(field.get());

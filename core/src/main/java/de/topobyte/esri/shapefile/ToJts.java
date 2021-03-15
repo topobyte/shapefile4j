@@ -56,8 +56,8 @@ public class ToJts
 
 	public static MultiPolygon convert(PolygonShape p)
 	{
-		List<LinearRing> outerRings = new ArrayList<LinearRing>();
-		List<LinearRing> innerRings = new ArrayList<LinearRing>();
+		List<LinearRing> outerRings = new ArrayList<>();
+		List<LinearRing> innerRings = new ArrayList<>();
 		int parts = p.getNumberOfParts();
 		for (int i = 0; i < parts; i++) {
 			Coordinate[] coordinates = convert(p.getPointsOfPart(i));
@@ -98,13 +98,13 @@ public class ToJts
 		}
 
 		// We got holes, locate outer rings for each inner ring
-		Map<Polygon, List<LinearRing>> map = new HashMap<Polygon, List<LinearRing>>();
+		Map<Polygon, List<LinearRing>> map = new HashMap<>();
 		for (LinearRing inner : innerRings) {
 			for (Polygon p : polygons) {
 				if (p.contains(inner)) {
 					List<LinearRing> holes = map.get(p);
 					if (holes == null) {
-						holes = new ArrayList<LinearRing>();
+						holes = new ArrayList<>();
 						map.put(p, holes);
 					}
 					holes.add(inner);

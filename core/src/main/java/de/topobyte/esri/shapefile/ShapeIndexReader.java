@@ -35,7 +35,7 @@ public class ShapeIndexReader
 
 	private ShapeFileHeader header;
 
-	private List<Record> records = new ArrayList<Record>();
+	private List<Record> records = new ArrayList<>();
 
 	/**
 	 * <p>

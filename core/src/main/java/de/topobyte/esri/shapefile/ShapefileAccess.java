@@ -61,7 +61,7 @@ public class ShapefileAccess
 		File shp = shapefile.getShapefileFile();
 		FileInputStream isShp = new FileInputStream(shp);
 
-		List<Geometry> result = new ArrayList<Geometry>();
+		List<Geometry> result = new ArrayList<>();
 
 		ValidationPreferences prefs = new ValidationPreferences();
 		prefs.setMaxNumberOfPointsPerShape(Integer.MAX_VALUE);
