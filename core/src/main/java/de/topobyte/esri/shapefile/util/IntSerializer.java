@@ -71,7 +71,8 @@ public class IntSerializer
 		b.putInt(value);
 	}
 
-	public static void serializeLittleEndian(final int value, final ByteBuffer b)
+	public static void serializeLittleEndian(final int value,
+			final ByteBuffer b)
 	{
 		if (b == null) {
 			throw new RuntimeException(

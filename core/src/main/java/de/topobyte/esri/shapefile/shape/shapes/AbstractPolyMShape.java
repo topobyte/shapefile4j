@@ -30,7 +30,8 @@ import de.topobyte.esri.shapefile.util.ISUtil;
 public abstract class AbstractPolyMShape extends AbstractPolyShape
 {
 
-	private static final int BASE_CONTENT_LENGTH = (4 + 8 * 4 + 4 + 4 + 8 * 2) / 2;
+	private static final int BASE_CONTENT_LENGTH = (4 + 8 * 4 + 4 + 4 + 8 * 2)
+			/ 2;
 
 	private double minM;
 	private double maxM;
@@ -38,8 +39,8 @@ public abstract class AbstractPolyMShape extends AbstractPolyShape
 
 	public AbstractPolyMShape(final ShapeHeader shapeHeader,
 			final ShapeType shapeType, final InputStream is,
-			final ValidationPreferences rules) throws IOException,
-			InvalidShapeFileException
+			final ValidationPreferences rules)
+			throws IOException, InvalidShapeFileException
 	{
 
 		super(shapeHeader, shapeType, is, rules);

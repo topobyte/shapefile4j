@@ -39,10 +39,9 @@ public class PointZShape extends AbstractPointShape
 	private double z;
 	private double m;
 
-	public PointZShape(final ShapeHeader shapeHeader,
-			final ShapeType shapeType, final InputStream is,
-			final ValidationPreferences rules) throws IOException,
-			InvalidShapeFileException
+	public PointZShape(final ShapeHeader shapeHeader, final ShapeType shapeType,
+			final InputStream is, final ValidationPreferences rules)
+			throws IOException, InvalidShapeFileException
 	{
 		super(shapeHeader, shapeType, is, rules);
 

@@ -63,8 +63,8 @@ public class ShapeIndexReader
 		initialize(is);
 	}
 
-	private void initialize(final InputStream is) throws IOException,
-			InvalidShapeFileException
+	private void initialize(final InputStream is)
+			throws IOException, InvalidShapeFileException
 	{
 		if (is == null) {
 			throw new RuntimeException(

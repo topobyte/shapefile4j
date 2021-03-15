@@ -32,8 +32,8 @@ public abstract class AbstractPolyPlainShape extends AbstractPolyShape
 
 	public AbstractPolyPlainShape(final ShapeHeader shapeHeader,
 			final ShapeType shapeType, final InputStream is,
-			final ValidationPreferences rules) throws IOException,
-			InvalidShapeFileException
+			final ValidationPreferences rules)
+			throws IOException, InvalidShapeFileException
 	{
 
 		super(shapeHeader, shapeType, is, rules);

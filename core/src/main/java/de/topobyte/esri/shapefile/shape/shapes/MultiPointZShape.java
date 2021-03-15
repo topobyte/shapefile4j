@@ -34,7 +34,8 @@ import de.topobyte.esri.shapefile.util.ISUtil;
 public class MultiPointZShape extends AbstractMultiPointShape
 {
 
-	private static final int BASE_CONTENT_LENGTH = (4 + 8 * 4 + 4 + 8 * 2 + 8 * 2) / 2;
+	private static final int BASE_CONTENT_LENGTH = (4 + 8 * 4 + 4 + 8 * 2
+			+ 8 * 2) / 2;
 
 	private double minZ;
 	private double maxZ;
@@ -46,8 +47,8 @@ public class MultiPointZShape extends AbstractMultiPointShape
 
 	public MultiPointZShape(final ShapeHeader shapeHeader,
 			final ShapeType shapeType, final InputStream is,
-			final ValidationPreferences rules) throws IOException,
-			InvalidShapeFileException
+			final ValidationPreferences rules)
+			throws IOException, InvalidShapeFileException
 	{
 		super(shapeHeader, shapeType, is, rules);
 

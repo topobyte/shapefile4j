@@ -38,7 +38,8 @@ import de.topobyte.esri.shapefile.util.ISUtil;
 public class MultiPatchShape extends AbstractShape
 {
 
-	private static final int BASE_CONTENT_LENGTH = (4 + 8 * 4 + 4 + 4 + 8 * 2 + 8 * 2) / 2;
+	private static final int BASE_CONTENT_LENGTH = (4 + 8 * 4 + 4 + 4 + 8 * 2
+			+ 8 * 2) / 2;
 
 	protected double boxMinX;
 	protected double boxMinY;
@@ -62,8 +63,8 @@ public class MultiPatchShape extends AbstractShape
 
 	public MultiPatchShape(final ShapeHeader shapeHeader,
 			final ShapeType shapeType, final InputStream is,
-			final ValidationPreferences rules) throws IOException,
-			InvalidShapeFileException
+			final ValidationPreferences rules)
+			throws IOException, InvalidShapeFileException
 	{
 
 		super(shapeHeader, shapeType, is, rules);
@@ -111,8 +112,8 @@ public class MultiPatchShape extends AbstractShape
 			throw new InvalidShapeFileException("Invalid " + getShapeTypeName()
 					+ " shape number of parts. "
 					+ "It should be smaller or equal to the number of points ("
-					+ this.numberOfPoints + "), but found "
-					+ this.numberOfParts + ". " + Const.PREFERENCES);
+					+ this.numberOfPoints + "), but found " + this.numberOfParts
+					+ ". " + Const.PREFERENCES);
 		}
 
 		if (!rules.isAllowUnlimitedNumberOfPointsPerShape()) {

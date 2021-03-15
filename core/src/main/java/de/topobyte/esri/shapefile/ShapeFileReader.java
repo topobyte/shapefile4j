@@ -119,8 +119,8 @@ public class ShapeFileReader
 	}
 
 	private void initialize(final InputStream is, List<Record> records,
-			final ValidationPreferences preferences) throws IOException,
-			InvalidShapeFileException
+			final ValidationPreferences preferences)
+			throws IOException, InvalidShapeFileException
 	{
 		if (is == null) {
 			throw new RuntimeException(
@@ -197,12 +197,12 @@ public class ShapeFileReader
 		if (!ok) {
 			long delta = record.getOffset() * 2 - pis.getPosition();
 			if (delta > 0) {
-				logger.warn("Skipping "
-						+ delta
+				logger.warn("Skipping " + delta
 						+ " bytes of the shapefile to reach the next item as defined in the index");
 				ISUtil.skip(pis, delta);
 			} else {
-				logger.warn("Error in shapefile: shapefile record was longer than defined in index");
+				logger.warn(
+						"Error in shapefile: shapefile record was longer than defined in index");
 			}
 		}
 
@@ -226,9 +226,8 @@ public class ShapeFileReader
 		try {
 			typeId = ISUtil.readLeInt(this.pis);
 		} catch (EOFException e) {
-			throw new InvalidShapeFileException(
-					"Unexpected end of stream. "
-							+ "The data is too short for the shape that was being read.");
+			throw new InvalidShapeFileException("Unexpected end of stream. "
+					+ "The data is too short for the shape that was being read.");
 		}
 
 		// Shape body
@@ -239,8 +238,7 @@ public class ShapeFileReader
 			shapeType = ShapeType.parse(typeId);
 			if (shapeType == null) {
 				throw new InvalidShapeFileException("Invalid shape type '"
-						+ typeId + "'. "
-						+ "The shape type can be forced using "
+						+ typeId + "'. " + "The shape type can be forced using "
 						+ "the additional constructor with "
 						+ "ValidationRules.");
 			}
@@ -308,8 +306,8 @@ public class ShapeFileReader
 						this.rules);
 
 			default:
-				throw new InvalidShapeFileException("Unexpected shape type '"
-						+ shapeType + "'");
+				throw new InvalidShapeFileException(
+						"Unexpected shape type '" + shapeType + "'");
 			}
 
 		} catch (EOFException e) {

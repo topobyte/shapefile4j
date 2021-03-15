@@ -22,12 +22,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.topobyte.esri.shapefile.dbf.Database;
 import de.topobyte.esri.shapefile.exception.InvalidShapeFileException;
@@ -49,8 +48,8 @@ public class ShapefileAccess
 		this.shapefile = shapefile;
 	}
 
-	public List<Geometry> getAllGeometries() throws InvalidShapeFileException,
-			IOException
+	public List<Geometry> getAllGeometries()
+			throws InvalidShapeFileException, IOException
 	{
 		File shx = shapefile.getIndexFile();
 		FileInputStream isShx = new FileInputStream(shx);

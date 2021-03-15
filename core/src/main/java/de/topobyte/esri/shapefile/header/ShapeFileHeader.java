@@ -53,8 +53,8 @@ public class ShapeFileHeader
 	private double boxMinM;
 	private double boxMaxM;
 
-	public ShapeFileHeader(final InputStream is) throws IOException,
-			InvalidShapeFileException
+	public ShapeFileHeader(final InputStream is)
+			throws IOException, InvalidShapeFileException
 	{
 
 		try {
@@ -99,9 +99,9 @@ public class ShapeFileHeader
 			this.boxMaxM = ISUtil.readLeDouble(is);
 
 		} catch (EOFException e) {
-			throw new InvalidShapeFileException("Unexpected end of stream. "
-					+ "The content is too short. "
-					+ "It doesn't even have a complete header.");
+			throw new InvalidShapeFileException(
+					"Unexpected end of stream. " + "The content is too short. "
+							+ "It doesn't even have a complete header.");
 		}
 	}
 

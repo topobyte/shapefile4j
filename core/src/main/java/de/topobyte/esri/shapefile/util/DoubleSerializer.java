@@ -54,7 +54,8 @@ public class DoubleSerializer
 		return b.getDouble();
 	}
 
-	public static void serializeBigEndian(final double value, final ByteBuffer b)
+	public static void serializeBigEndian(final double value,
+			final ByteBuffer b)
 	{
 		if (b == null) {
 			throw new RuntimeException(

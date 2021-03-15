@@ -25,9 +25,8 @@ public class DatabaseUtil
 	{
 		for (int k = 0; k < database.getNumberOfColumns(); k++) {
 			Field field = database.getField(k);
-			System.out.println("Field " + k + ": " + field.getName()
-					+ ", type=" + field.getType() + ", len="
-					+ field.getLength());
+			System.out.println("Field " + k + ": " + field.getName() + ", type="
+					+ field.getType() + ", len=" + field.getLength());
 		}
 	}
 

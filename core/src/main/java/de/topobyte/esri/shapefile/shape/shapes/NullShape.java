@@ -44,9 +44,8 @@ public class NullShape extends AbstractShape
 		if (!rules.isAllowBadContentLength()
 				&& this.header.getContentLength() != FIXED_CONTENT_LENGTH) {
 			throw new InvalidShapeFileException(
-					"Invalid Null shape header's content length. "
-							+ "Expected " + FIXED_CONTENT_LENGTH
-							+ " 16-bit words but found "
+					"Invalid Null shape header's content length. " + "Expected "
+							+ FIXED_CONTENT_LENGTH + " 16-bit words but found "
 							+ this.header.getContentLength() + ". "
 							+ Const.PREFERENCES);
 		}

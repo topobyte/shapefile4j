@@ -34,8 +34,8 @@ public class PolylineZShape extends AbstractPolyZShape
 
 	public PolylineZShape(final ShapeHeader shapeHeader,
 			final ShapeType shapeType, final InputStream is,
-			final ValidationPreferences rules) throws IOException,
-			InvalidShapeFileException
+			final ValidationPreferences rules)
+			throws IOException, InvalidShapeFileException
 	{
 
 		super(shapeHeader, shapeType, is, rules);
