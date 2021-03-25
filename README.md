@@ -1,7 +1,7 @@
 # shapefile4j
 
 This work is based on the Java ESRI Shape File Reader which is
-distributed under the terms of the GNU LGPLv3.
+distributed under the terms of the Apache License Version 2.0.
 
 The source code has been copied from Sourceforge in July 2014
 http://sourceforge.net/projects/javashapefilere/
