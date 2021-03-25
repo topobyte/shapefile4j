@@ -6,7 +6,7 @@ distributed under the terms of the Apache License Version 2.0.
 The source code has been copied from Sourceforge in July 2014
 http://sourceforge.net/projects/javashapefilere/
 
-## Why another shapefile library
+## Why another shapefile library?
 
 There's the library `org.geotools:gt-shapefile` which can be used for
 working with shapefiles. If you don't want to pull in 12Mb of transitive
