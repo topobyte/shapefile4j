@@ -1,3 +1,3 @@
 include 'core', 'util'
-project(':core').name = 'shapefile-lib'
-project(':util').name = 'shapefile-lib-util'
+project(':core').name = 'shapefile4j'
+project(':util').name = 'shapefile4j-util'
