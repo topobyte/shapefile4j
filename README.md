@@ -11,4 +11,5 @@ http://sourceforge.net/projects/javashapefilere/
 There's the library `org.geotools:gt-shapefile` which can be used for
 working with shapefiles. If you don't want to pull in 12Mb of transitive
 dependencies but rather work with a rather small library of a few dozen
-kB in size, this library could be a better choice.
+kB in size, this library could be a better choice. This library has a
+bunch of dependencies itself, but they accumulate to roughly 2Mb in size.
