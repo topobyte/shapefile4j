@@ -2,4 +2,4 @@
 
 DIR=`dirname $0`
 
-$DIR/shapefile-lib de.topobyte.esri.shapefile.executables.DumpData "$@"
+$DIR/shapefile4j de.topobyte.esri.shapefile.executables.DumpData "$@"
