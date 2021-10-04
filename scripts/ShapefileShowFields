@@ -1,5 +1,0 @@
-#!/bin/bash
-
-DIR=`dirname $0`
-
-$DIR/shapefile4j de.topobyte.esri.shapefile.executables.ShowFields "$@"

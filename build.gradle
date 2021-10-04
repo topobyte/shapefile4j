@@ -2,6 +2,15 @@ wrapper {
     gradleVersion = '5.2.1'
 }
 
+buildscript {
+    repositories {
+        maven { url 'http://mvn.topobyte.de' }
+    }
+    dependencies {
+        classpath 'de.topobyte:gradle-launch-and-install-plugin:0.0.3'
+    }
+}
+
 allprojects {
     group = pGroup
     version = pVersion
@@ -50,6 +59,19 @@ project(':shapefile4j') {
 }
 
 project(':shapefile4j-util') {
+    apply plugin: 'application'
+    apply plugin: 'de.topobyte.launch-and-install-gradle-plugin'
+
+    startScripts.enabled = false
+
+    launchAndInstall {
+        installationPath = 'topobyte/shapefile4j'
+        makeselfLabel = 'Shapefile4j'
+        createScript(project, 'de.topobyte.esri.shapefile.executables.DumpData', 'ShapefileDumpData')
+        createScript(project, 'de.topobyte.esri.shapefile.executables.ShowFields', 'ShapefileShowFields')
+        createScript(project, 'de.topobyte.esri.shapefile.executables.ToSmxCollection', 'ShapefileToSmxCollection')
+    }
+
     dependencies {
         compile project(':shapefile4j')
         compile 'de.topobyte:simple-mapfile-xml:0.1.0'
