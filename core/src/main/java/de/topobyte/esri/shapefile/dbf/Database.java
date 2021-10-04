@@ -30,6 +30,7 @@ public class Database
 	public Database(String filename)
 	{
 		try {
+			DBF.setEncodingType("UTF8");
 			DBF dbf = new DBF(filename, DBF.READ_ONLY);
 
 			for (int i = 1; i <= dbf.getFieldCount(); ++i) {
