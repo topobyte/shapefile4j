@@ -34,6 +34,9 @@ subprojects {
         }
         mavenCentral()
     }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 }
 
 project(':shapefile4j') {
@@ -48,9 +51,6 @@ project(':shapefile4j') {
         apply from: 'file:///' + System.getProperty("user.home") \
             + '/.gradle/topobyte.gradle'
     }
-
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
 
     java {
          withSourcesJar()
