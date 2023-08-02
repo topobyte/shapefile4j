@@ -51,6 +51,14 @@ public class ShapefileAccess
 	public List<Geometry> getAllGeometries()
 			throws InvalidShapeFileException, IOException
 	{
+		ValidationPreferences prefs = new ValidationPreferences();
+		prefs.setMaxNumberOfPointsPerShape(Integer.MAX_VALUE);
+		return getAllGeometries(prefs);
+	}
+
+	public List<Geometry> getAllGeometries(ValidationPreferences prefs)
+			throws InvalidShapeFileException, IOException
+	{
 		File shx = shapefile.getIndexFile();
 		FileInputStream isShx = new FileInputStream(shx);
 		ShapeIndexReader shapeIndexReader = new ShapeIndexReader(isShx);
@@ -62,8 +70,6 @@ public class ShapefileAccess
 
 		List<Geometry> result = new ArrayList<>();
 
-		ValidationPreferences prefs = new ValidationPreferences();
-		prefs.setMaxNumberOfPointsPerShape(Integer.MAX_VALUE);
 		ShapeFileReader sfr = new ShapeFileReader(isShp, records, prefs);
 		AbstractShape s;
 
