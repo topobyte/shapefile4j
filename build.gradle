@@ -42,9 +42,9 @@ subprojects {
 project(':shapefile4j') {
     dependencies {
         api 'de.topobyte:dbf4j:0.1.0'
-        api 'org.locationtech.jts:jts-core:1.16.1'
-        api 'commons-codec:commons-codec:1.10'
-        api 'org.slf4j:slf4j-api:1.6.1'
+        api 'org.locationtech.jts:jts-core:1.19.0'
+        api 'commons-codec:commons-codec:1.16.0'
+        api 'org.slf4j:slf4j-api:1.7.36'
     }
 
     if (project.hasProperty("topobyte")) {
