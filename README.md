@@ -23,5 +23,5 @@ We provide access to the artifacts via our own Maven repository:
 The package is available at these coordinates:
 
 <pre>
-<a href="https://mvn.topobyte.de/de/topobyte/shapefile4j/0.1.0/">de.topobyte:shapefile4j:0.1.0</a>
+<a href="https://mvn.topobyte.de/de/topobyte/shapefile4j/0.1.2/">de.topobyte:shapefile4j:0.1.2</a>
 </pre>
