@@ -47,6 +47,8 @@ project(':shapefile4j') {
         api 'org.slf4j:slf4j-api:1.7.36'
     }
 
+    eclipse.project.name = 'shapefile4j'
+
     if (project.hasProperty("topobyte")) {
         apply from: 'file:///' + System.getProperty("user.home") \
             + '/.gradle/topobyte.gradle'
