@@ -76,6 +76,7 @@ project(':shapefile4j-util') {
         installationPath = 'topobyte/shapefile4j'
         makeselfLabel = 'Shapefile4j'
         createScript(project, 'de.topobyte.esri.shapefile.executables.DumpData', 'ShapefileDumpData')
+        createScript(project, 'de.topobyte.esri.shapefile.executables.Info', 'ShapefileInfo')
         createScript(project, 'de.topobyte.esri.shapefile.executables.ShowFields', 'ShapefileShowFields')
         createScript(project, 'de.topobyte.esri.shapefile.executables.ToSmxCollection', 'ShapefileToSmxCollection')
     }
@@ -84,6 +85,7 @@ project(':shapefile4j-util') {
         implementation project(':shapefile4j')
         implementation 'de.topobyte:simple-mapfile-xml:0.1.0'
         implementation 'de.topobyte:commons-cli-helper:0.1.0'
+        implementation 'de.topobyte:various-utils:0.0.1'
 
         runtimeOnly 'org.slf4j:slf4j-log4j12:1.6.1'
         runtimeOnly 'log4j:log4j:1.2.16'
