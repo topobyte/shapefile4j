@@ -27,12 +27,16 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.topobyte.esri.shapefile.shape.PointData;
+import de.topobyte.esri.shapefile.shape.shapes.AbstractMultiPointShape;
+import de.topobyte.esri.shapefile.shape.shapes.AbstractPointShape;
 import de.topobyte.esri.shapefile.shape.shapes.PolygonShape;
 import de.topobyte.esri.shapefile.shape.shapes.PolylineShape;
 
@@ -51,6 +55,18 @@ public class ToJts
 			coordinates[k] = new Coordinate(pointData.getX(), pointData.getY());
 		}
 		return coordinates;
+	}
+
+	public static Point convert(AbstractPointShape p)
+	{
+		Coordinate coordinate = new Coordinate(p.getX(), p.getY());
+		return f.createPoint(coordinate);
+	}
+
+	public static MultiPoint convert(AbstractMultiPointShape p)
+	{
+		Coordinate[] coordinates = convert(p.getPoints());
+		return f.createMultiPointFromCoords(coordinates);
 	}
 
 	public static MultiPolygon convert(PolygonShape p)
