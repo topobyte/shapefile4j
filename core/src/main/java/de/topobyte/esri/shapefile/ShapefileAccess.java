@@ -55,6 +55,12 @@ public class ShapefileAccess
 		this.shapefile = shapefile;
 	}
 
+	/**
+	 * Read all geometries from the shapefile using permissive point-count
+	 * validation suitable for large production datasets.
+	 * 
+	 * @return all geometries contained in the shapefile.
+	 */
 	public List<Geometry> getAllGeometries()
 			throws InvalidShapeFileException, IOException
 	{
@@ -63,6 +69,14 @@ public class ShapefileAccess
 		return getAllGeometries(prefs);
 	}
 
+	/**
+	 * Read all geometries from the shapefile using the supplied validation
+	 * preferences.
+	 * 
+	 * @param prefs
+	 *            validation preferences to use while reading.
+	 * @return all geometries contained in the shapefile.
+	 */
 	public List<Geometry> getAllGeometries(ValidationPreferences prefs)
 			throws InvalidShapeFileException, IOException
 	{
@@ -70,6 +84,18 @@ public class ShapefileAccess
 		return getGeometries(records, prefs);
 	}
 
+	/**
+	 * Read geometries for the supplied subset of shapefile records.
+	 * 
+	 * <p>
+	 * This method assumes that the supplied list may be sparse and therefore
+	 * relaxes record-number validation accordingly.
+	 * </p>
+	 * 
+	 * @param records
+	 *            the subset of records to read.
+	 * @return geometries for the supplied records.
+	 */
 	public List<Geometry> getGeometries(List<Record> records)
 			throws InvalidShapeFileException, IOException
 	{
@@ -82,6 +108,16 @@ public class ShapefileAccess
 		return getGeometries(records, prefs);
 	}
 
+	/**
+	 * Read geometries for the supplied subset of shapefile records using the
+	 * supplied validation preferences.
+	 * 
+	 * @param records
+	 *            the subset of records to read.
+	 * @param prefs
+	 *            validation preferences to use while reading.
+	 * @return geometries for the supplied records.
+	 */
 	public List<Geometry> getGeometries(List<Record> records,
 			ValidationPreferences prefs)
 			throws InvalidShapeFileException, IOException
@@ -130,6 +166,11 @@ public class ShapefileAccess
 		return result;
 	}
 
+	/**
+	 * Read all index records from the shapefile's {@code .shx} file.
+	 * 
+	 * @return all index records contained in the shapefile.
+	 */
 	public List<Record> getRecords()
 			throws InvalidShapeFileException, IOException
 	{
@@ -141,6 +182,20 @@ public class ShapefileAccess
 		}
 	}
 
+	/**
+	 * Select index records whose per-record envelope intersects the supplied
+	 * envelope.
+	 * 
+	 * <p>
+	 * This is only a coarse pre-filter based on record bounding boxes read from
+	 * the {@code .shp} file. It does not perform exact geometry intersection
+	 * tests.
+	 * </p>
+	 * 
+	 * @param envelope
+	 *            the query envelope.
+	 * @return records whose record envelope intersects the query envelope.
+	 */
 	public List<Record> getRecords(Envelope envelope)
 			throws InvalidShapeFileException, IOException
 	{
@@ -163,6 +218,20 @@ public class ShapefileAccess
 		return selected;
 	}
 
+	/**
+	 * Read geometries whose per-record envelope intersects the supplied query
+	 * envelope.
+	 * 
+	 * <p>
+	 * Record selection is only a coarse pre-filter based on record bounding
+	 * boxes. The returned geometries are not clipped to the envelope and may
+	 * lie partially or fully outside it.
+	 * </p>
+	 * 
+	 * @param envelope
+	 *            the query envelope.
+	 * @return geometries whose record envelope intersects the query envelope.
+	 */
 	public List<Geometry> getGeometries(Envelope envelope)
 			throws InvalidShapeFileException, IOException
 	{
@@ -170,6 +239,22 @@ public class ShapefileAccess
 		return getGeometries(records);
 	}
 
+	/**
+	 * Read geometries whose per-record envelope intersects the supplied query
+	 * envelope using the supplied validation preferences.
+	 * 
+	 * <p>
+	 * Record selection is only a coarse pre-filter based on record bounding
+	 * boxes. The returned geometries are not clipped to the envelope and may
+	 * lie partially or fully outside it.
+	 * </p>
+	 * 
+	 * @param envelope
+	 *            the query envelope.
+	 * @param prefs
+	 *            validation preferences to use while reading.
+	 * @return geometries whose record envelope intersects the query envelope.
+	 */
 	public List<Geometry> getGeometries(Envelope envelope,
 			ValidationPreferences prefs)
 			throws InvalidShapeFileException, IOException
