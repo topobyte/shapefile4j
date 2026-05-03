@@ -45,7 +45,7 @@ public class Info
 			System.exit(1);
 		}
 
-		String filename = args[0];
+		String filename = Util.normalizeBasePath(args[0]);
 		Shapefile shapefile = new Shapefile(filename);
 
 		List<Record> records;

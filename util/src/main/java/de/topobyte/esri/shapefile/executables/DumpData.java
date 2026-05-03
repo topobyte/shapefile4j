@@ -23,6 +23,7 @@ import de.topobyte.esri.shapefile.dbf.DatabaseUtil;
 
 public class DumpData
 {
+
 	public static void main(String[] args)
 	{
 		if (args.length != 1) {
@@ -31,11 +32,12 @@ public class DumpData
 			System.exit(1);
 		}
 
-		String filename = args[0];
+		String filename = Util.normalizeBasePath(args[0]);
 		Shapefile shapefile = new Shapefile(filename);
 		ShapefileAccess sa = new ShapefileAccess(shapefile);
 
 		Database database = sa.getDatabase();
 		DatabaseUtil.printRows(database);
 	}
+
 }

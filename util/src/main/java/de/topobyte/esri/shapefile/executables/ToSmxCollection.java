@@ -31,6 +31,7 @@ import de.topobyte.simplemapfile.xml.SmxFileWriter;
 
 public class ToSmxCollection
 {
+
 	public static void main(String[] args)
 	{
 		if (args.length != 2) {
@@ -39,7 +40,7 @@ public class ToSmxCollection
 			System.exit(1);
 		}
 
-		String pathInput = args[0];
+		String pathInput = Util.normalizeBasePath(args[0]);
 		String pathOutput = args[1];
 
 		File dir = new File(pathOutput);
@@ -97,4 +98,5 @@ public class ToSmxCollection
 			}
 		}
 	}
+
 }
