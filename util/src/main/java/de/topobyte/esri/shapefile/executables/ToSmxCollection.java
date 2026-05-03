@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.locationtech.jts.geom.Geometry;
 import org.xBaseJ.fields.Field;
 
 import de.topobyte.esri.shapefile.Shapefile;
@@ -86,19 +85,16 @@ public class ToSmxCollection
 
 		String pattern = String.format("object-%%0%dd.smx", digits);
 
-		int i = 0;
-		for (Record record : records) {
-			Geometry geometry = sa.getGeometry(record);
-
+		sa.forEachGeometry(records, (index, record, geometry) -> {
 			EntityFile entityFile = new EntityFile();
 			entityFile.setGeometry(geometry);
-			Row row = database.getRow(i);
+			Row row = database.getRow(index - 1);
 			for (int k = 0; k < database.getNumberOfColumns(); k++) {
 				Field field = database.getField(k);
 				String value = row.getValue(k).trim();
 				entityFile.addTag(field.getName(), value);
 			}
-			File file = new File(dir, String.format(pattern, i));
+			File file = new File(dir, String.format(pattern, index));
 			try {
 				SmxFileWriter.write(entityFile, file);
 			} catch (Exception e) {
@@ -107,8 +103,7 @@ public class ToSmxCollection
 						+ e.getClass().getSimpleName() + "): "
 						+ e.getMessage());
 			}
-			i++;
-		}
+		});
 	}
 
 }

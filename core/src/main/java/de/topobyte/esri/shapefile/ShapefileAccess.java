@@ -182,6 +182,63 @@ public class ShapefileAccess
 		return result;
 	}
 
+	/**
+	 * Read geometries for the supplied subset of shapefile records using a
+	 * sequential streaming traversal and invoke the supplied handler for each
+	 * converted geometry.
+	 * 
+	 * <p>
+	 * This method assumes that the supplied list may be sparse and therefore
+	 * relaxes record-number validation accordingly.
+	 * </p>
+	 * 
+	 * @param records
+	 *            the subset of records to read.
+	 * @param handler
+	 *            callback invoked once per converted geometry.
+	 */
+	public void forEachGeometry(List<Record> records, GeometryHandler handler)
+			throws InvalidShapeFileException, IOException
+	{
+		ValidationPreferences prefs = new ValidationPreferences();
+		prefs.setMaxNumberOfPointsPerShape(Integer.MAX_VALUE);
+		// We need to allow bad records numbers here because we most likely only
+		// select a subset of the shapefile's records and will not encounter all
+		// shapes indices without any gaps.
+		prefs.setAllowBadRecordNumbers(true);
+		forEachGeometry(records, prefs, handler);
+	}
+
+	/**
+	 * Read geometries for the supplied subset of shapefile records using the
+	 * supplied validation preferences and a sequential streaming traversal and
+	 * invoke the supplied handler for each converted geometry.
+	 * 
+	 * @param records
+	 *            the subset of records to read.
+	 * @param prefs
+	 *            validation preferences to use while reading.
+	 * @param handler
+	 *            callback invoked once per converted geometry.
+	 */
+	public void forEachGeometry(List<Record> records,
+			ValidationPreferences prefs, GeometryHandler handler)
+			throws InvalidShapeFileException, IOException
+	{
+		File shp = shapefile.getShapefileFile();
+		try (InputStream input = new FileInputStream(shp)) {
+			ShapeFileReader reader = new ShapeFileReader(input, records, prefs);
+			AbstractShape s;
+
+			int i = 0;
+			while ((s = reader.next()) != null) {
+				int index = ++i;
+				Record record = records.get(index - 1);
+				handler.handle(index, record, getGeometry(index, s));
+			}
+		}
+	}
+
 	private Geometry getGeometry(int i, AbstractShape s)
 	{
 		ShapeType shapeType = s.getShapeType();
