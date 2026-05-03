@@ -35,7 +35,6 @@ public abstract class AbstractPolyPlainShape extends AbstractPolyShape
 			final ValidationPreferences rules)
 			throws IOException, InvalidShapeFileException
 	{
-
 		super(shapeHeader, shapeType, is, rules);
 
 		if (!rules.isAllowBadContentLength()) {
@@ -53,7 +52,6 @@ public abstract class AbstractPolyPlainShape extends AbstractPolyShape
 						+ Const.PREFERENCES);
 			}
 		}
-
 	}
 
 	// Getters

@@ -34,7 +34,6 @@ public class ShapeHeader
 			throws DataStreamEOFException, IOException,
 			InvalidShapeFileException
 	{
-
 		this.recordNumber = ISUtil.readBeIntMaybeEOF(is);
 		if (!rules.isAllowBadRecordNumbers()) {
 			if (this.recordNumber != rules.getExpectedRecordNumber()) {

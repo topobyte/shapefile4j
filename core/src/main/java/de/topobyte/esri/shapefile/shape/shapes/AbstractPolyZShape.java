@@ -46,7 +46,6 @@ public abstract class AbstractPolyZShape extends AbstractPolyShape
 			final ValidationPreferences rules)
 			throws IOException, InvalidShapeFileException
 	{
-
 		super(shapeHeader, shapeType, is, rules);
 
 		if (!rules.isAllowBadContentLength()) {
@@ -80,7 +79,6 @@ public abstract class AbstractPolyZShape extends AbstractPolyShape
 		for (int i = 0; i < this.numberOfPoints; i++) {
 			this.measures[i] = ISUtil.readLeDouble(is);
 		}
-
 	}
 
 	public double[] getMOfPart(final int i)

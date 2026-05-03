@@ -48,7 +48,6 @@ public abstract class AbstractPolyShape extends AbstractShape
 			final ValidationPreferences rules)
 			throws IOException, InvalidShapeFileException
 	{
-
 		super(shapeHeader, shapeType, is, rules);
 
 		this.boxMinX = ISUtil.readLeDouble(is);
@@ -103,7 +102,6 @@ public abstract class AbstractPolyShape extends AbstractShape
 			double y = ISUtil.readLeDouble(is);
 			this.points[i] = new PointData(x, y);
 		}
-
 	}
 
 	protected abstract String getShapeTypeName();

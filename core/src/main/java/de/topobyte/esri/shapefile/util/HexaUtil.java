@@ -21,7 +21,6 @@ public class HexaUtil
 
 	public static final byte[] stringToByteArray(final String orig)
 	{
-
 		String txt = orig.toLowerCase();
 
 		StringBuffer sb = new StringBuffer();

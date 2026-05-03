@@ -56,7 +56,6 @@ public class ShapeFileHeader
 	public ShapeFileHeader(final InputStream is)
 			throws IOException, InvalidShapeFileException
 	{
-
 		try {
 			this.fileCode = ISUtil.readBeInt(is);
 			if (this.fileCode != SHAPE_FILE_CODE) {

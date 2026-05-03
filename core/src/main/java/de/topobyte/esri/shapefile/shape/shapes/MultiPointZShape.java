@@ -81,7 +81,6 @@ public class MultiPointZShape extends AbstractMultiPointShape
 		for (int i = 0; i < this.numberOfPoints; i++) {
 			this.m[i] = ISUtil.readLeDouble(is);
 		}
-
 	}
 
 	@Override

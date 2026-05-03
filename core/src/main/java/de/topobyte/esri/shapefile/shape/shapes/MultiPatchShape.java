@@ -66,7 +66,6 @@ public class MultiPatchShape extends AbstractShape
 			final ValidationPreferences rules)
 			throws IOException, InvalidShapeFileException
 	{
-
 		super(shapeHeader, shapeType, is, rules);
 
 		if (!rules.isAllowBadContentLength()) {

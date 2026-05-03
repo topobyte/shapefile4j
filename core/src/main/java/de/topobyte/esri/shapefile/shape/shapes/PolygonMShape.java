@@ -37,9 +37,7 @@ public class PolygonMShape extends AbstractPolyMShape
 			final ValidationPreferences rules)
 			throws IOException, InvalidShapeFileException
 	{
-
 		super(shapeHeader, shapeType, is, rules);
-
 	}
 
 	@Override

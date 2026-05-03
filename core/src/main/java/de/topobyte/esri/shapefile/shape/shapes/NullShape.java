@@ -49,7 +49,6 @@ public class NullShape extends AbstractShape
 							+ this.header.getContentLength() + ". "
 							+ Const.PREFERENCES);
 		}
-
 	}
 
 }

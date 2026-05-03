@@ -42,7 +42,6 @@ public abstract class AbstractPolyMShape extends AbstractPolyShape
 			final ValidationPreferences rules)
 			throws IOException, InvalidShapeFileException
 	{
-
 		super(shapeHeader, shapeType, is, rules);
 
 		if (!rules.isAllowBadContentLength()) {

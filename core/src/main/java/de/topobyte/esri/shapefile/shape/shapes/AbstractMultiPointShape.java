@@ -69,7 +69,6 @@ public abstract class AbstractMultiPointShape extends AbstractShape
 			double y = ISUtil.readLeDouble(is);
 			this.points[i] = new PointData(x, y);
 		}
-
 	}
 
 	protected abstract String getShapeTypeName();

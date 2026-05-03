@@ -40,7 +40,6 @@ public class MultiPointPlainShape extends AbstractMultiPointShape
 			final ValidationPreferences rules)
 			throws IOException, InvalidShapeFileException
 	{
-
 		super(shapeHeader, shapeType, is, rules);
 
 		if (!rules.isAllowBadContentLength()) {
@@ -56,7 +55,6 @@ public class MultiPointPlainShape extends AbstractMultiPointShape
 						+ Const.PREFERENCES);
 			}
 		}
-
 	}
 
 	@Override
