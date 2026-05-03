@@ -25,3 +25,40 @@ The package is available at these coordinates:
 <pre>
 <a href="https://mvn.topobyte.de/de/topobyte/shapefile4j/0.1.2/">de.topobyte:shapefile4j:0.1.2</a>
 </pre>
+
+## Executables
+
+This repository also ships a small set of command line tools from the
+`util` module.
+
+To build and install the executables, run:
+
+```bash
+./install.sh
+```
+
+This builds the distribution and runs the generated installer from
+`util/build/setup/`.
+
+The installer creates symlinks for the commands in:
+
+```bash
+$HOME/bin
+```
+
+Make sure that directory is part of your `PATH`, for example:
+
+```bash
+export PATH="$PATH:$HOME/bin"
+```
+
+The following commands are installed:
+
+- `ShapefileInfo`
+  show file sizes, record counts and bounding box information
+- `ShapefileShowFields`
+  print the DBF field definitions
+- `ShapefileDumpData`
+  print all rows from the associated DBF table
+- `ShapefileToSmxCollection`
+  convert all geometries plus DBF attributes into a directory of SMX files
