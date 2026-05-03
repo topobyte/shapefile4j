@@ -21,14 +21,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
-import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +82,31 @@ public class ShapefileAccess
 	}
 
 	/**
+	 * Read one geometry for the supplied shapefile record.
+	 * 
+	 * <p>
+	 * This method assumes that the supplied record is most likely not the first
+	 * entry and therefore relaxes record-number validation accordingly.
+	 * </p>
+	 * 
+	 * @param record
+	 *            the record to read
+	 * @return geometry for the supplied record.
+	 */
+	public Geometry getGeometry(Record record)
+			throws InvalidShapeFileException, IOException
+	{
+		ValidationPreferences prefs = new ValidationPreferences();
+		prefs.setMaxNumberOfPointsPerShape(Integer.MAX_VALUE);
+		// We need to allow bad records numbers here because we most likely only
+		// select a subset of the shapefile's records and will not encounter all
+		// shapes indices without any gaps.
+		prefs.setAllowBadRecordNumbers(true);
+
+		return getGeometry(record, prefs);
+	}
+
+	/**
 	 * Read geometries for the supplied subset of shapefile records.
 	 * 
 	 * <p>
@@ -109,6 +131,28 @@ public class ShapefileAccess
 	}
 
 	/**
+	 * Read one geometry for the supplied shapefile record using the supplied
+	 * validation preferences.
+	 * 
+	 * @param record
+	 *            the record to read.
+	 * @param prefs
+	 *            validation preferences to use while reading.
+	 * @return geometry for the supplied record.
+	 */
+	public Geometry getGeometry(Record record, ValidationPreferences prefs)
+			throws InvalidShapeFileException, IOException
+	{
+		File shp = shapefile.getShapefileFile();
+		try (InputStream input = new FileInputStream(shp)) {
+			ShapeFileReader reader = new ShapeFileReader(input,
+					Arrays.asList(record), prefs);
+			AbstractShape s = reader.next();
+			return getGeometry(1, s);
+		}
+	}
+
+	/**
 	 * Read geometries for the supplied subset of shapefile records using the
 	 * supplied validation preferences.
 	 * 
@@ -126,44 +170,43 @@ public class ShapefileAccess
 
 		File shp = shapefile.getShapefileFile();
 		try (InputStream input = new FileInputStream(shp)) {
-
 			ShapeFileReader reader = new ShapeFileReader(input, records, prefs);
 			AbstractShape s;
 
 			int i = 0;
 			while ((s = reader.next()) != null) {
-				i++;
-				ShapeType shapeType = s.getShapeType();
-				logger.debug("ITEM " + i + ": " + shapeType);
-				if (shapeType == ShapeType.POINT
-						|| shapeType == ShapeType.POINT_M
-						|| shapeType == ShapeType.POINT_Z) {
-					AbstractPointShape p = (AbstractPointShape) s;
-					Point point = ToJts.convert(p);
-					result.add(point);
-				} else if (shapeType == ShapeType.POLYGON
-						|| shapeType == ShapeType.POLYGON_M
-						|| shapeType == ShapeType.POLYGON_Z) {
-					PolygonShape p = (PolygonShape) s;
-					MultiPolygon polygon = ToJts.convert(p);
-					result.add(polygon);
-				} else if (shapeType == ShapeType.POLYLINE
-						|| shapeType == ShapeType.POLYLINE_M
-						|| shapeType == ShapeType.POLYLINE_Z) {
-					PolylineShape p = (PolylineShape) s;
-					MultiLineString mls = ToJts.convert(p);
-					result.add(mls);
-				} else if (shapeType == ShapeType.MULTIPOINT
-						|| shapeType == ShapeType.MULTIPOINT_M
-						|| shapeType == ShapeType.MULTIPOINT_Z) {
-					AbstractMultiPointShape p = (AbstractMultiPointShape) s;
-					MultiPoint multiPoint = ToJts.convert(p);
-					result.add(multiPoint);
-				}
+				result.add(getGeometry(++i, s));
 			}
 		}
 
 		return result;
+	}
+
+	private Geometry getGeometry(int i, AbstractShape s)
+	{
+		ShapeType shapeType = s.getShapeType();
+		logger.debug("ITEM " + i + ": " + shapeType);
+		if (shapeType == ShapeType.POINT || shapeType == ShapeType.POINT_M
+				|| shapeType == ShapeType.POINT_Z) {
+			AbstractPointShape p = (AbstractPointShape) s;
+			return ToJts.convert(p);
+		} else if (shapeType == ShapeType.POLYGON
+				|| shapeType == ShapeType.POLYGON_M
+				|| shapeType == ShapeType.POLYGON_Z) {
+			PolygonShape p = (PolygonShape) s;
+			return ToJts.convert(p);
+		} else if (shapeType == ShapeType.POLYLINE
+				|| shapeType == ShapeType.POLYLINE_M
+				|| shapeType == ShapeType.POLYLINE_Z) {
+			PolylineShape p = (PolylineShape) s;
+			return ToJts.convert(p);
+		} else if (shapeType == ShapeType.MULTIPOINT
+				|| shapeType == ShapeType.MULTIPOINT_M
+				|| shapeType == ShapeType.MULTIPOINT_Z) {
+			AbstractMultiPointShape p = (AbstractMultiPointShape) s;
+			return ToJts.convert(p);
+		}
+		throw new IllegalStateException();
 	}
 
 	/**

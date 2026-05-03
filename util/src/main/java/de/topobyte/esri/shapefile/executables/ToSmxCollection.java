@@ -17,6 +17,7 @@
 package de.topobyte.esri.shapefile.executables;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.locationtech.jts.geom.Geometry;
@@ -26,6 +27,8 @@ import de.topobyte.esri.shapefile.Shapefile;
 import de.topobyte.esri.shapefile.ShapefileAccess;
 import de.topobyte.esri.shapefile.dbf.Database;
 import de.topobyte.esri.shapefile.dbf.Row;
+import de.topobyte.esri.shapefile.exception.InvalidShapeFileException;
+import de.topobyte.esri.shapefile.index.Record;
 import de.topobyte.simplemapfile.core.EntityFile;
 import de.topobyte.simplemapfile.xml.SmxFileWriter;
 
@@ -56,30 +59,38 @@ public class ToSmxCollection
 			System.exit(1);
 		}
 
+		try {
+			convertAll(pathInput, dir);
+		} catch (InvalidShapeFileException | IOException e) {
+			System.out.println("Error while processing shape data ("
+					+ e.getClass().getSimpleName() + "): " + e.getMessage());
+			System.exit(1);
+		}
+	}
+
+	private static void convertAll(String pathInput, File dir)
+			throws InvalidShapeFileException, IOException
+	{
 		Shapefile shapefile = new Shapefile(pathInput);
 		ShapefileAccess sa = new ShapefileAccess(shapefile);
 
 		Database database = sa.getDatabase();
 
-		List<Geometry> geometries = null;
-		try {
-			geometries = sa.getAllGeometries();
-		} catch (Exception e) {
-			System.out.println("Error while reading shape data ("
-					+ e.getClass().getSimpleName() + "): " + e.getMessage());
-			System.exit(1);
-		}
+		List<Record> records = sa.getRecords();
 
 		int digits = 1;
-		double n = Math.log10(geometries.size());
+		double n = Math.log10(records.size());
 		if (!Double.isInfinite(n) && !Double.isNaN(n)) {
 			digits = (int) Math.ceil(n);
 		}
+
 		String pattern = String.format("object-%%0%dd.smx", digits);
 
-		for (int i = 0; i < geometries.size(); i++) {
+		int i = 0;
+		for (Record record : records) {
+			Geometry geometry = sa.getGeometry(record);
+
 			EntityFile entityFile = new EntityFile();
-			Geometry geometry = geometries.get(i);
 			entityFile.setGeometry(geometry);
 			Row row = database.getRow(i);
 			for (int k = 0; k < database.getNumberOfColumns(); k++) {
@@ -91,11 +102,12 @@ public class ToSmxCollection
 			try {
 				SmxFileWriter.write(entityFile, file);
 			} catch (Exception e) {
-				System.out.println("Error while reading writing output file '"
+				System.out.println("Error while writing output file '"
 						+ file.getAbsolutePath() + "' ("
 						+ e.getClass().getSimpleName() + "): "
 						+ e.getMessage());
 			}
+			i++;
 		}
 	}
 

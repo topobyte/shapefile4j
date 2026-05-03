@@ -75,10 +75,11 @@ project(':shapefile4j-util') {
     launchAndInstall {
         installationPath = 'topobyte/shapefile4j'
         makeselfLabel = 'Shapefile4j'
+        def extraArgs = ['-Xmx8g']
         createScript(project, 'de.topobyte.esri.shapefile.executables.DumpData', 'ShapefileDumpData')
         createScript(project, 'de.topobyte.esri.shapefile.executables.Info', 'ShapefileInfo')
         createScript(project, 'de.topobyte.esri.shapefile.executables.ShowFields', 'ShapefileShowFields')
-        createScript(project, 'de.topobyte.esri.shapefile.executables.ToSmxCollection', 'ShapefileToSmxCollection')
+        createScript(project, 'de.topobyte.esri.shapefile.executables.ToSmxCollection', 'ShapefileToSmxCollection', extraArgs)
     }
 
     dependencies {
