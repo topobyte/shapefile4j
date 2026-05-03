@@ -24,7 +24,9 @@ import java.util.List;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +35,8 @@ import de.topobyte.esri.shapefile.exception.InvalidShapeFileException;
 import de.topobyte.esri.shapefile.index.Record;
 import de.topobyte.esri.shapefile.shape.AbstractShape;
 import de.topobyte.esri.shapefile.shape.ShapeType;
+import de.topobyte.esri.shapefile.shape.shapes.AbstractMultiPointShape;
+import de.topobyte.esri.shapefile.shape.shapes.AbstractPointShape;
 import de.topobyte.esri.shapefile.shape.shapes.PolygonShape;
 import de.topobyte.esri.shapefile.shape.shapes.PolylineShape;
 
@@ -78,14 +82,29 @@ public class ShapefileAccess
 			i++;
 			ShapeType shapeType = s.getShapeType();
 			logger.debug("ITEM " + i + ": " + shapeType);
-			if (shapeType == ShapeType.POLYGON) {
+			if (shapeType == ShapeType.POINT || shapeType == ShapeType.POINT_M
+					|| shapeType == ShapeType.POINT_Z) {
+				AbstractPointShape p = (AbstractPointShape) s;
+				Point point = ToJts.convert(p);
+				result.add(point);
+			} else if (shapeType == ShapeType.POLYGON
+					|| shapeType == ShapeType.POLYGON_M
+					|| shapeType == ShapeType.POLYGON_Z) {
 				PolygonShape p = (PolygonShape) s;
 				MultiPolygon polygon = ToJts.convert(p);
 				result.add(polygon);
-			} else if (shapeType == ShapeType.POLYLINE) {
+			} else if (shapeType == ShapeType.POLYLINE
+					|| shapeType == ShapeType.POLYLINE_M
+					|| shapeType == ShapeType.POLYLINE_Z) {
 				PolylineShape p = (PolylineShape) s;
 				MultiLineString mls = ToJts.convert(p);
 				result.add(mls);
+			} else if (shapeType == ShapeType.MULTIPOINT
+					|| shapeType == ShapeType.MULTIPOINT_M
+					|| shapeType == ShapeType.MULTIPOINT_Z) {
+				AbstractMultiPointShape p = (AbstractMultiPointShape) s;
+				MultiPoint multiPoint = ToJts.convert(p);
+				result.add(multiPoint);
 			}
 		}
 

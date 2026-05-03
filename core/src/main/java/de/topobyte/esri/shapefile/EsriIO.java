@@ -19,10 +19,9 @@ package de.topobyte.esri.shapefile;
 import java.io.IOException;
 import java.util.List;
 
+import org.locationtech.jts.geom.Geometry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.locationtech.jts.geom.Geometry;
 
 import de.topobyte.esri.shapefile.exception.InvalidShapeFileException;
 
@@ -36,12 +35,11 @@ public class EsriIO
 	final static Logger logger = LoggerFactory.getLogger(EsriIO.class);
 
 	/**
-	 * Read in a ShapeFile and return all contained shapes as a list of
-	 * Multipolygons.
+	 * Read in a ShapeFile and return all contained geometries as JTS objects.
 	 * 
 	 * @param filename
 	 *            a filename to read from.
-	 * @return a list of read multipolygons.
+	 * @return a list of read geometries.
 	 * @throws IOException
 	 *             on failure of reading.
 	 * @throws InvalidShapeFileException
