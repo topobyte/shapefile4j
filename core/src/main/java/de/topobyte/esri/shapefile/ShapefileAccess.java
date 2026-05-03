@@ -70,13 +70,15 @@ public class ShapefileAccess
 		return getGeometries(records, prefs);
 	}
 
-	public List<Geometry> getGeometries(List<Record> records,
-			boolean allowBadRecordNumbers)
+	public List<Geometry> getGeometries(List<Record> records)
 			throws InvalidShapeFileException, IOException
 	{
 		ValidationPreferences prefs = new ValidationPreferences();
 		prefs.setMaxNumberOfPointsPerShape(Integer.MAX_VALUE);
-		prefs.setAllowBadRecordNumbers(allowBadRecordNumbers);
+		// We need to allow bad records numbers here because we most likely only
+		// select a subset of the shapefile's records and will not encounter all
+		// shapes indices without any gaps.
+		prefs.setAllowBadRecordNumbers(true);
 		return getGeometries(records, prefs);
 	}
 
@@ -165,10 +167,7 @@ public class ShapefileAccess
 			throws InvalidShapeFileException, IOException
 	{
 		List<Record> records = getRecords(envelope);
-		// We need to allow bad records numbers here because we most likely only
-		// select a subset of the shapefile's records and will not encounter all
-		// shapes indices without any gaps.
-		return getGeometries(records, true);
+		return getGeometries(records);
 	}
 
 	public List<Geometry> getGeometries(Envelope envelope,
@@ -176,6 +175,10 @@ public class ShapefileAccess
 			throws InvalidShapeFileException, IOException
 	{
 		List<Record> records = getRecords(envelope);
+		// We need to allow bad records numbers here because we most likely only
+		// select a subset of the shapefile's records and will not encounter all
+		// shapes indices without any gaps.
+		prefs.setAllowBadRecordNumbers(true);
 		return getGeometries(records, prefs);
 	}
 
