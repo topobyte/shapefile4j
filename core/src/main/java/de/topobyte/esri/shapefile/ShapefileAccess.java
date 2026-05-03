@@ -63,12 +63,22 @@ public class ShapefileAccess
 	public List<Geometry> getAllGeometries(ValidationPreferences prefs)
 			throws InvalidShapeFileException, IOException
 	{
-		File shx = shapefile.getIndexFile();
-		FileInputStream isShx = new FileInputStream(shx);
-		ShapeIndexReader shapeIndexReader = new ShapeIndexReader(isShx);
-		shapeIndexReader.read();
-		List<Record> records = shapeIndexReader.getRecords();
+		List<Record> records = getRecords();
+		return getGeometries(records, prefs);
+	}
 
+	public List<Geometry> getGeometries(List<Record> records)
+			throws InvalidShapeFileException, IOException
+	{
+		ValidationPreferences prefs = new ValidationPreferences();
+		prefs.setMaxNumberOfPointsPerShape(Integer.MAX_VALUE);
+		return getGeometries(records, prefs);
+	}
+
+	public List<Geometry> getGeometries(List<Record> records,
+			ValidationPreferences prefs)
+			throws InvalidShapeFileException, IOException
+	{
 		File shp = shapefile.getShapefileFile();
 		FileInputStream isShp = new FileInputStream(shp);
 
@@ -111,8 +121,19 @@ public class ShapefileAccess
 		return result;
 	}
 
+	public List<Record> getRecords()
+			throws InvalidShapeFileException, IOException
+	{
+		File shx = shapefile.getIndexFile();
+		FileInputStream isShx = new FileInputStream(shx);
+		ShapeIndexReader shapeIndexReader = new ShapeIndexReader(isShx);
+		shapeIndexReader.read();
+		return shapeIndexReader.getRecords();
+	}
+
 	public Database getDatabase()
 	{
 		return new Database(shapefile.getDatabaseFile().getAbsolutePath());
 	}
+
 }
