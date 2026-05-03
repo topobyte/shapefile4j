@@ -100,6 +100,8 @@ public class ShapeRecordInfoReader
 		if (pis.getPosition() != record.getOffset() * 2L) {
 			long delta = record.getOffset() * 2L - pis.getPosition();
 			if (delta > 0) {
+				logger.debug("Skipping " + delta
+						+ " bytes of the shapefile to reach the next item as defined in the index");
 				ISUtil.skip(pis, delta);
 			} else {
 				logger.warn(
