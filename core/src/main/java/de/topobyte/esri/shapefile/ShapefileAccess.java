@@ -19,9 +19,11 @@ package de.topobyte.esri.shapefile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
@@ -33,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import de.topobyte.esri.shapefile.dbf.Database;
 import de.topobyte.esri.shapefile.exception.InvalidShapeFileException;
 import de.topobyte.esri.shapefile.index.Record;
+import de.topobyte.esri.shapefile.record.ShapeRecordInfo;
 import de.topobyte.esri.shapefile.shape.AbstractShape;
 import de.topobyte.esri.shapefile.shape.ShapeType;
 import de.topobyte.esri.shapefile.shape.shapes.AbstractMultiPointShape;
@@ -67,11 +70,13 @@ public class ShapefileAccess
 		return getGeometries(records, prefs);
 	}
 
-	public List<Geometry> getGeometries(List<Record> records)
+	public List<Geometry> getGeometries(List<Record> records,
+			boolean allowBadRecordNumbers)
 			throws InvalidShapeFileException, IOException
 	{
 		ValidationPreferences prefs = new ValidationPreferences();
 		prefs.setMaxNumberOfPointsPerShape(Integer.MAX_VALUE);
+		prefs.setAllowBadRecordNumbers(allowBadRecordNumbers);
 		return getGeometries(records, prefs);
 	}
 
@@ -79,42 +84,44 @@ public class ShapefileAccess
 			ValidationPreferences prefs)
 			throws InvalidShapeFileException, IOException
 	{
-		File shp = shapefile.getShapefileFile();
-		FileInputStream isShp = new FileInputStream(shp);
-
 		List<Geometry> result = new ArrayList<>();
 
-		ShapeFileReader sfr = new ShapeFileReader(isShp, records, prefs);
-		AbstractShape s;
+		File shp = shapefile.getShapefileFile();
+		try (InputStream input = new FileInputStream(shp)) {
 
-		int i = 0;
-		while ((s = sfr.next()) != null) {
-			i++;
-			ShapeType shapeType = s.getShapeType();
-			logger.debug("ITEM " + i + ": " + shapeType);
-			if (shapeType == ShapeType.POINT || shapeType == ShapeType.POINT_M
-					|| shapeType == ShapeType.POINT_Z) {
-				AbstractPointShape p = (AbstractPointShape) s;
-				Point point = ToJts.convert(p);
-				result.add(point);
-			} else if (shapeType == ShapeType.POLYGON
-					|| shapeType == ShapeType.POLYGON_M
-					|| shapeType == ShapeType.POLYGON_Z) {
-				PolygonShape p = (PolygonShape) s;
-				MultiPolygon polygon = ToJts.convert(p);
-				result.add(polygon);
-			} else if (shapeType == ShapeType.POLYLINE
-					|| shapeType == ShapeType.POLYLINE_M
-					|| shapeType == ShapeType.POLYLINE_Z) {
-				PolylineShape p = (PolylineShape) s;
-				MultiLineString mls = ToJts.convert(p);
-				result.add(mls);
-			} else if (shapeType == ShapeType.MULTIPOINT
-					|| shapeType == ShapeType.MULTIPOINT_M
-					|| shapeType == ShapeType.MULTIPOINT_Z) {
-				AbstractMultiPointShape p = (AbstractMultiPointShape) s;
-				MultiPoint multiPoint = ToJts.convert(p);
-				result.add(multiPoint);
+			ShapeFileReader reader = new ShapeFileReader(input, records, prefs);
+			AbstractShape s;
+
+			int i = 0;
+			while ((s = reader.next()) != null) {
+				i++;
+				ShapeType shapeType = s.getShapeType();
+				logger.debug("ITEM " + i + ": " + shapeType);
+				if (shapeType == ShapeType.POINT
+						|| shapeType == ShapeType.POINT_M
+						|| shapeType == ShapeType.POINT_Z) {
+					AbstractPointShape p = (AbstractPointShape) s;
+					Point point = ToJts.convert(p);
+					result.add(point);
+				} else if (shapeType == ShapeType.POLYGON
+						|| shapeType == ShapeType.POLYGON_M
+						|| shapeType == ShapeType.POLYGON_Z) {
+					PolygonShape p = (PolygonShape) s;
+					MultiPolygon polygon = ToJts.convert(p);
+					result.add(polygon);
+				} else if (shapeType == ShapeType.POLYLINE
+						|| shapeType == ShapeType.POLYLINE_M
+						|| shapeType == ShapeType.POLYLINE_Z) {
+					PolylineShape p = (PolylineShape) s;
+					MultiLineString mls = ToJts.convert(p);
+					result.add(mls);
+				} else if (shapeType == ShapeType.MULTIPOINT
+						|| shapeType == ShapeType.MULTIPOINT_M
+						|| shapeType == ShapeType.MULTIPOINT_Z) {
+					AbstractMultiPointShape p = (AbstractMultiPointShape) s;
+					MultiPoint multiPoint = ToJts.convert(p);
+					result.add(multiPoint);
+				}
 			}
 		}
 
@@ -125,10 +132,51 @@ public class ShapefileAccess
 			throws InvalidShapeFileException, IOException
 	{
 		File shx = shapefile.getIndexFile();
-		FileInputStream isShx = new FileInputStream(shx);
-		ShapeIndexReader shapeIndexReader = new ShapeIndexReader(isShx);
-		shapeIndexReader.read();
-		return shapeIndexReader.getRecords();
+		try (InputStream input = new FileInputStream(shx)) {
+			ShapeIndexReader reader = new ShapeIndexReader(input);
+			reader.read();
+			return reader.getRecords();
+		}
+	}
+
+	public List<Record> getRecords(Envelope envelope)
+			throws InvalidShapeFileException, IOException
+	{
+		List<Record> records = getRecords();
+		List<Record> selected = new ArrayList<>();
+
+		File shp = shapefile.getShapefileFile();
+		try (InputStream input = new FileInputStream(shp)) {
+			ShapeRecordInfoReader reader = new ShapeRecordInfoReader(input,
+					records);
+			ShapeRecordInfo info;
+			while ((info = reader.next()) != null) {
+				Envelope itemEnvelope = info.getEnvelope();
+				if (itemEnvelope != null && itemEnvelope.intersects(envelope)) {
+					selected.add(info.getRecord());
+				}
+			}
+		}
+
+		return selected;
+	}
+
+	public List<Geometry> getGeometries(Envelope envelope)
+			throws InvalidShapeFileException, IOException
+	{
+		List<Record> records = getRecords(envelope);
+		// We need to allow bad records numbers here because we most likely only
+		// select a subset of the shapefile's records and will not encounter all
+		// shapes indices without any gaps.
+		return getGeometries(records, true);
+	}
+
+	public List<Geometry> getGeometries(Envelope envelope,
+			ValidationPreferences prefs)
+			throws InvalidShapeFileException, IOException
+	{
+		List<Record> records = getRecords(envelope);
+		return getGeometries(records, prefs);
 	}
 
 	public Database getDatabase()
